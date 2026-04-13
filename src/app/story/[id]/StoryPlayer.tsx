@@ -86,7 +86,7 @@ export default function StoryPlayer({ story }: Props) {
         </defs>
         {/* Forme blanche : bord gauche organique, remplit vers la droite */}
         <path
-          d="M 48,0 C 62,120 34,240 50,360 C 64,480 34,580 50,700 C 62,820 36,900 48,1000 L 90,1000 L 90,0 Z"
+          d="M 45,0 C 72,55 22,110 58,190 C 80,250 28,300 42,380 C 18,440 74,490 52,560 C 30,620 76,670 40,740 C 20,800 68,850 35,910 C 55,950 28,975 48,1000 L 90,1000 L 90,0 Z"
           fill="#fffbeb"
           filter="url(#pastel-noise)"
         />
