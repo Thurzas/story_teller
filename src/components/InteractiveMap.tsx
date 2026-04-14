@@ -3,49 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import MapModal from "./MapModal";
+import { ZONES, type Zone } from "@/data/zones";
 
 // Rapport d'aspect de Carte.jpg — sert au calcul du zoom
 const IMAGE_ASPECT_RATIO = 750 / 440;
-
-type Zone = {
-  id: string;
-  label: string;
-  description: string;
-  // Points du polygone SVG dans un espace viewBox "0 0 100 100"
-  // Format : "x1,y1 x2,y2 x3,y3 ..."
-  points: string;
-};
-
-const ZONES: Zone[] = [
-  {
-    id: "Louvre",
-    label: "Le Louvre",
-    description:
-      "Le musée du Louvre, c'est un immense château magique ! Il garde des milliers de trésors et de tableaux merveilleux. Tu as vu la grande pyramide en verre devant ?",
-    points: "2,8 12,5 32,5 37,12 37,62 26,68 5,65 2,50",
-  },
-  {
-    id: "opera",
-    label: "L'Opéra Garnier",
-    description:
-      "L'Opéra Garnier est comme un château de conte de fées ! Des danseuses et des chanteurs font des spectacles magnifiques sur sa grande scène dorée.",
-    points: "55,3 88,3 91,16 89,50 62,52 52,42 52,12",
-  },
-  {
-    id: "tuileries",
-    label: "Les Tuileries",
-    description:
-      "Le jardin des Tuileries, c'est le grand parc au cœur de Paris ! Les enfants viennent y jouer, faire du manège et écouter le bruit des fontaines.",
-    points: "28,52 56,50 63,58 60,80 36,82 24,72 27,55",
-  },
-  {
-    id: "catacombes",
-    label: "Les Catacombes",
-    description:
-      "Sous les rues de Paris se cachent les catacombes... C'est un long couloir souterrain très mystérieux. Un endroit vraiment très très spécial !",
-    points: "63,57 86,55 100,60 100,100 65,100 60,76",
-  },
-];
 
 // Calcule la bounding-box d'un polygone à partir de ses points SVG
 function getBounds(points: string): { x: number; y: number; w: number; h: number } {

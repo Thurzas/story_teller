@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
+import { ZONES as SOURCE_ZONES } from "@/data/zones";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -12,35 +13,6 @@ type Zone = {
   color: string;
   points: Point[];
 };
-
-// ─── State initial — copie des zones de InteractiveMap.tsx ────────────────────
-
-const INITIAL_ZONES: Zone[] = [
-  {
-    id: "Louvre",
-    label: "Le Louvre",
-    color: "#3b82f6",
-    points: parse("2,8 12,5 32,5 37,12 37,62 26,68 5,65 2,50"),
-  },
-  {
-    id: "opera",
-    label: "L'Opéra Garnier",
-    color: "#a855f7",
-    points: parse("55,3 88,3 91,16 89,50 62,52 52,42 52,12"),
-  },
-  {
-    id: "tuileries",
-    label: "Les Tuileries",
-    color: "#22c55e",
-    points: parse("28,52 56,50 63,58 60,80 36,82 24,72 27,55"),
-  },
-  {
-    id: "catacombes",
-    label: "Les Catacombes",
-    color: "#ef4444",
-    points: parse("63,57 86,55 100,60 100,100 65,100 60,76"),
-  },
-];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -66,7 +38,9 @@ function svgCoords(e: React.MouseEvent, svg: SVGSVGElement): Point {
 // ─── Composant ────────────────────────────────────────────────────────────────
 
 export default function MapEditor() {
-  const [zones, setZones] = useState<Zone[]>(INITIAL_ZONES);
+  const [zones, setZones] = useState<Zone[]>(() =>
+    SOURCE_ZONES.map((z) => ({ ...z, points: parse(z.points) }))
+  );
   const [selectedId, setSelectedId] = useState<string>("Louvre");
   const [copied, setCopied] = useState(false);
 
