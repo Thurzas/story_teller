@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Story } from "@/types/story";
 import SequenceView from "@/components/SequenceView";
 
@@ -11,6 +11,15 @@ type Props = {
 export default function StoryPlayer({ story }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [finished, setFinished] = useState(false);
+
+  useEffect(() => {
+    story.sequences.forEach((seq) => {
+      if (seq.image) {
+        const img = new Image();
+        img.src = seq.image;
+      }
+    });
+  }, [story]);
 
   const currentSequence = story.sequences[currentIndex];
   const isFirst = currentIndex === 0;
@@ -35,6 +44,10 @@ export default function StoryPlayer({ story }: Props) {
     setFinished(false);
   }
 
+  function handleGetBackToHome() {
+    window.location.href = "/";
+  }
+  
   if (finished) {
     return (
       <div className="w-full h-full bg-linear-to-b from-blue-900 to-stone-900 flex flex-col items-center justify-center gap-8 px-6 text-center">
@@ -47,6 +60,12 @@ export default function StoryPlayer({ story }: Props) {
         >
           🔄 Recommencer
         </button>
+        <button
+          onClick={handleGetBackToHome}
+          className="mt-4 bg-amber-400 hover:bg-amber-500 active:scale-95 text-white text-2xl font-bold py-5 px-10 rounded-full shadow-lg transition-transform"
+        >
+          🏠 Accueil
+        </button>
       </div>
     );
   }
@@ -56,7 +75,9 @@ export default function StoryPlayer({ story }: Props) {
 
       {/* Colonne gauche — illustration (3/4) */}
       <div className="relative w-3/4 h-full">
-        <SequenceView sequence={currentSequence} />
+        <div key={currentIndex} className="animate-fadeIn w-full h-full">
+          <SequenceView sequence={currentSequence} />
+        </div>
       </div>
 
       {/* Trait pastel blanc — bord organique avec bruit */}
@@ -111,17 +132,17 @@ export default function StoryPlayer({ story }: Props) {
           ))}
         </div>
 
-        {/* Titre de la séquence */}
-        {currentSequence.title && (
-          <h2 className="text-2xl font-bold text-stone-800 leading-snug mb-4">
-            {currentSequence.title}
-          </h2>
-        )}
-
-        {/* Texte de la séquence */}
-        <p className="text-lg text-stone-600 leading-relaxed">
-          {currentSequence.text}
-        </p>
+        {/* Titre + texte avec fade */}
+        <div key={currentIndex} className="animate-fadeIn">
+          {currentSequence.title && (
+            <h2 className="text-2xl font-bold text-stone-800 leading-snug mb-4">
+              {currentSequence.title}
+            </h2>
+          )}
+          <p className="text-lg text-stone-600 leading-relaxed">
+            {currentSequence.text}
+          </p>
+        </div>
 
         <div className="flex-1" />
 
@@ -131,7 +152,7 @@ export default function StoryPlayer({ story }: Props) {
       <button
         onClick={handlePrev}
         disabled={isFirst}
-        className="absolute left-4 bottom-8 w-16 h-16 rounded-full bg-white/80 hover:bg-white active:scale-95 disabled:opacity-20 text-2xl shadow-lg transition-transform backdrop-blur-sm"
+        className="absolute left-4 bottom-8 z-20 w-16 h-16 rounded-full bg-white/80 hover:bg-white active:scale-95 disabled:opacity-20 text-2xl shadow-lg transition-transform backdrop-blur-sm touch-manipulation"
         aria-label="Séquence précédente"
       >
         ◀
@@ -140,7 +161,7 @@ export default function StoryPlayer({ story }: Props) {
       {/* Bouton Suivant — bord droit, bas */}
       <button
         onClick={handleNext}
-        className="absolute right-4 bottom-8 w-16 h-16 rounded-full bg-amber-400 hover:bg-amber-500 active:scale-95 text-2xl shadow-lg transition-transform"
+        className="absolute right-4 bottom-8 z-20 w-16 h-16 rounded-full bg-amber-400 hover:bg-amber-500 active:scale-95 text-2xl shadow-lg transition-transform touch-manipulation"
         aria-label={isLast ? "Terminer" : "Séquence suivante"}
       >
         {isLast ? "⭐" : "▶"}
