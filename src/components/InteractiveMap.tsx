@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import MapModal from "./MapModal";
 import { ZONES, type Zone } from "@/data/zones";
@@ -64,22 +64,29 @@ export default function InteractiveMap() {
   const router = useRouter();
   const [activeZone, setActiveZone] = useState<Zone | null>(null);
 
+  useEffect(() => {
+    console.log("[InteractiveMap] composant monté — React hydraté OK");
+  }, []);
+
   function getHitZone(clientX: number, clientY: number, rect: DOMRect) {
     const x = ((clientX - rect.left) / rect.width) * 100;
     const y = ((clientY - rect.top) / rect.height) * 100;
-    return ZONES.find((z) => isPointInPolygon(x, y, z.points)) ?? null;
+    console.log(`[InteractiveMap] coords % → x:${x.toFixed(1)} y:${y.toFixed(1)}`);
+    const hit = ZONES.find((z) => isPointInPolygon(x, y, z.points)) ?? null;
+    console.log(`[InteractiveMap] zone détectée → ${hit?.id ?? "aucune"}`);
+    return hit;
   }
 
-  // Touch natif — détection doigt sur tablette/mobile
   function handleTouchStart(e: React.TouchEvent<HTMLDivElement>) {
+    console.log("[InteractiveMap] onTouchStart déclenché");
     const touch = e.touches[0];
     const rect = e.currentTarget.getBoundingClientRect();
     const hit = getHitZone(touch.clientX, touch.clientY, rect);
     if (hit) setActiveZone(hit);
   }
 
-  // Fallback souris — PC
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
+    console.log("[InteractiveMap] onClick déclenché");
     const rect = e.currentTarget.getBoundingClientRect();
     const hit = getHitZone(e.clientX, e.clientY, rect);
     if (hit) setActiveZone(hit);
