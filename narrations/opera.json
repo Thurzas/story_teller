@@ -1,0 +1,30 @@
+{
+  "id": "opera",
+  "title": "Le fantôme de l’Opéra",
+  "sequences": [
+    {
+      "id": 1,
+      "title": "Dans un grand bâtiment, on chante et danse...",
+      "text": "L'Opéra Garnier, situé au cœur de Paris, est un lieu emblématique de la culture française. Mais derrière ses dorures et ses lustres scintillants, une légende persiste. On raconte que le fantôme d'un homme mystérieux hante les couloirs de l'opéra, attirant l'attention des visiteurs et des artistes depuis des siècles.",
+      "image": "/Opera01.png"
+    },
+    {
+      "id": 2,
+      "title": "Un fantôme mystérieux y vivrait...",
+      "text": "Peut-être avez-vous déjà entendu parler du fantôme de l’Opéra Garnier. Il serait à l’origine de nombreux évènements mystérieux qui se sont succédés au XIXe siècle dans le célèbre Opéra de Paris. ",
+      "image": "/Opera02.png"
+    },
+    {
+      "id": 3,
+      "title": "Des événements étranges sont liés au nombre 13...",
+      "text": "Alors que certains disent avoir déjà vu le fantôme, d’autres racontent qu'il serait obnubilé par le chiffre 13. L’Opéra Garnier serait le 13ème opéra à avoir été construit à Paris, un chiffre qui correspondrait bizarrement avec certains phénomènes étranges qui s’y sont passés",
+      "image": "/Opera03.png"
+    },
+    {
+      "id": 4,
+      "title": "Et si le fantôme était toujours là ?",
+      "text": "On raconte que certains visiteurs ont déjà entendu des bruits étranges ou vu des apparitions mystérieuses. Peut-être que le fantôme continue de hanter les lieux, attirant l’attention des visiteurs et des artistes qui s’y aventurent. Dans le doute, ne vous asseyez jamais à la 13ème place de l’opéra, on ne sait jamais ce qui pourrait arriver !",
+      "image": "/Opera04.png"
+    }
+  ]
+}

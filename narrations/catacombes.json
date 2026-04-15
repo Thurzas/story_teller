@@ -1,0 +1,30 @@
+{
+  "id": "catacombes",
+  "title": "Les tunnels secrets",
+  "sequences": [
+    {
+      "id": 1,
+      "title": "Sous Paris, il existe des tunnels très anciens...",
+      "text": "A la fin du XVIII eme siècle paris est confrontée à une grave crise : ses cimetières surpeuplés présentent des risques sanitaires importants pour les habitants de la ville...",
+      "image": "/Catacombes01.png"
+    },
+    {
+      "id": 2,
+      "title": "Les habitants y ont déplacé des ossements...",
+      "text": "Pour résoudre le problème les autorités ont commencé a déposer les restes humains dans des carrières de calcaire abandonnées sous la ville C'est ainsi que sont nés les catacombes de paris : un ossuaire dont les murs sont tapissés de crânes et d'ossements méticuleusement rangés.",
+      "image": "/Catacombes02.png"
+    },
+    {
+      "id": 3,
+      "title": "Aujourd’hui, ces tunnels sont silencieux...",
+      "text": "Ce qui rend les catacombes effrayantes, c'est pour beaucoup le silence oppressant, les passages faiblement éclairés, et le fait de savoir qu’ils sont entourés des restes de millions de personnes.",
+      "image": "/Catacombes03.png"
+    },
+    {
+      "id": 4,
+      "title": "Certains disent qu’ils ne sont pas seuls...",
+      "text": "Les adeptes du paranormal évoquent des observations de silhouettes fantomatiques des baisses soudaines de température et le sentiment d'être observés dans les profondeurs des catacombes, renforçant ainsi la réputation de ce lieu comme étant l'un des endroits les plus hantés de Paris.",
+      "image": "/Catacombes04.png"
+    }
+  ]
+}

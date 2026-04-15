@@ -3,7 +3,7 @@ import path from "path";
 import { Story } from "@/types/story";
 
 export async function getStory(id: string): Promise<Story | null> {
-  const narrationsDir = path.join(process.cwd(), "..", "narrations");
+  const narrationsDir = path.join(process.cwd(), "narrations");
 
   // Cherche le fichier JSON correspondant à l'id (insensible à la casse)
   let files: string[];

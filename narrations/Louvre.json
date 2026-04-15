@@ -1,0 +1,30 @@
+{
+  "id": "louvre",
+  "title": "Le musée mystérieux",
+  "sequences": [
+    {
+      "id": 1,      
+      "title": "Le Louvre est un immense musée...",
+      "text": "Le Louvre est un immense musée, mais avant d'accueillir des tableaux du monde entier, c'était le palais des rois et des reines de France. Entre ses hauts murs de pierre et sous ses plafonds dorés, chaque couloir semble murmurer une histoire ancienne. C'est ici, au cœur de Paris, que commence notre légende...",
+      "image": "/Louvre01.png"
+    },
+    {
+      "id": 2,
+      "title": "Un fantôme s’y promènerait la nuit...",
+      "text": "Certains visiteur ont également rapporté avoir vu des apparitions fantomatiques d'artistes dont les œuvres sont exposées comme léonard de Vinci ou Eugène Delacroix",
+      "image": "/Louvre02.png"   
+    },
+    {
+      "id": 3,
+      "title": "Des artistes reviendraient voir leurs œuvres...",
+      "text": "Ces âmes errantes seraient attirées par les chefs d’œuvre qu'ils ont créés et qu'ils continuent de veiller.",
+      "image": "/Louvre03.png"
+    },
+    {
+      "id": 4,
+      "title": "Une momie cacherait un étrange secret...",
+      "text": "Des employés du Louvre aurait senti ressenti une présence étrange autour des galeries égyptiennes où certains disent que la momie prends vie sous forme d'esprit.",
+      "image": "/Louvre04.png"
+    }
+  ]
+}

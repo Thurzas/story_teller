@@ -1,0 +1,32 @@
+{
+  "id": "tuileries",
+  "title": "Le fantôme rouge",
+  "sequences": [
+    {
+      "id": 1,
+      "title": "Il y a très longtemps, dans un grand palais à Paris...",
+      "text": "Dans les jardins des Tuileries, on raconte que l'endroit est hanté. La légende veut que le fantôme d'un homme vêtu de rouge, appelé Jean, apparaisse aux habitants du palais les nuits qui précédent un malheur.",
+      "image": "/Tuileries01.png"
+    },
+    {
+      "id": 2,
+      "title": "Un homme habillé en rouge apparaissait la nuit...",
+      "text": "C'est à l'époque de la célèbre Catherine de Médicis que remonte cette légende. Trop curieux de nature, Jean connaissait les secrets du palais et les racontait à tout le monde. Un jour, Cela fini par tomber aux oreilles de Neuvile, un des espions de la reine, qui décida de le punir.",      
+      "image": "/Tuileries02.png"
+    },
+    {
+      "id": 3,
+      "title": "Avant de disparaître, il a promis de revenir...",
+      "text": "Sachant que son heure était venu, il a promis qu'il reviendrait, pour réclamer justice..",
+      "image": "/Tuileries03.png"
+
+    },
+    {
+      "id": 4,
+      "title": "Peut-être qu’il se promène encore aujourd’hui...",
+      "text": "Depuis, les habitants du palais ont souvent vu le fantôme de Jean rôder dans les jardins des Tuileries, surtout les nuits qui précèdent un malheur.La reine, Marie Antoinette, aurait même vu le fantôme de Jean une nuit avant la révolution. Depuis, les habitants du palais ont toujours peur de voir le fantôme de Jean apparaître.",
+      "image": "/Tuileries04.png"
+
+    }
+  ]
+}
