@@ -5,11 +5,28 @@ import { useRouter } from "next/navigation";
 import MapModal from "./MapModal";
 import { ZONES, type Zone } from "@/data/zones";
 
-// Rapport d'aspect de Carte.jpg — sert au calcul du zoom
 const IMAGE_ASPECT_RATIO = 750 / 440;
 
-// Calcule la bounding-box d'un polygone à partir de ses points SVG
-function getBounds(points: string): { x: number; y: number; w: number; h: number } {
+// ─── Point-dans-polygone (ray casting) ───────────────────────────────────────
+// Coordonnées x/y en % (0-100), pointsStr au format "x1,y1 x2,y2 ..."
+function isPointInPolygon(x: number, y: number, pointsStr: string): boolean {
+  const pts = pointsStr.trim().split(/\s+/).map((p) => {
+    const [px, py] = p.split(",").map(Number);
+    return { x: px, y: py };
+  });
+  let inside = false;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+    const xi = pts[i].x, yi = pts[i].y;
+    const xj = pts[j].x, yj = pts[j].y;
+    if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+// ─── Zoom CSS sur la bounding-box de la zone ─────────────────────────────────
+function getBounds(points: string) {
   const coords = points.trim().split(/\s+/).map((p) => {
     const [x, y] = p.split(",").map(Number);
     return { x, y };
@@ -18,25 +35,15 @@ function getBounds(points: string): { x: number; y: number; w: number; h: number
   const ys = coords.map((c) => c.y);
   const minX = Math.min(...xs);
   const minY = Math.min(...ys);
-  return {
-    x: minX,
-    y: minY,
-    w: Math.max(...xs) - minX,
-    h: Math.max(...ys) - minY,
-  };
+  return { x: minX, y: minY, w: Math.max(...xs) - minX, h: Math.max(...ys) - minY };
 }
 
-// Zoom CSS sur la bounding-box de la zone cliquée
 function ZoneZoom({ points }: { points: string }) {
   const bounds = getBounds(points);
   const containerW = 380;
   const containerH = Math.round(containerW / IMAGE_ASPECT_RATIO);
-
   const scaledW = (containerW * 100) / bounds.w;
   const scaledH = scaledW / IMAGE_ASPECT_RATIO;
-
-  const bgX = -((bounds.x / 100) * scaledW);
-  const bgY = -((bounds.y / 100) * scaledH);
 
   return (
     <div
@@ -46,26 +53,45 @@ function ZoneZoom({ points }: { points: string }) {
         backgroundImage: "url(/Carte.jpg)",
         backgroundRepeat: "no-repeat",
         backgroundSize: `${scaledW}px ${scaledH}px`,
-        backgroundPosition: `${bgX}px ${bgY}px`,
+        backgroundPosition: `${-((bounds.x / 100) * scaledW)}px ${-((bounds.y / 100) * scaledH)}px`,
       }}
     />
   );
 }
 
+// ─── Composant principal ──────────────────────────────────────────────────────
 export default function InteractiveMap() {
   const router = useRouter();
   const [activeZone, setActiveZone] = useState<Zone | null>(null);
 
-  function handlePlay() {
-    if (activeZone) router.push(`/story/${activeZone.id}`);
+  function getHitZone(clientX: number, clientY: number, rect: DOMRect) {
+    const x = ((clientX - rect.left) / rect.width) * 100;
+    const y = ((clientY - rect.top) / rect.height) * 100;
+    return ZONES.find((z) => isPointInPolygon(x, y, z.points)) ?? null;
+  }
+
+  // Touch natif — détection doigt sur tablette/mobile
+  function handleTouchStart(e: React.TouchEvent<HTMLDivElement>) {
+    const touch = e.touches[0];
+    const rect = e.currentTarget.getBoundingClientRect();
+    const hit = getHitZone(touch.clientX, touch.clientY, rect);
+    if (hit) setActiveZone(hit);
+  }
+
+  // Fallback souris — PC
+  function handleClick(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const hit = getHitZone(e.clientX, e.clientY, rect);
+    if (hit) setActiveZone(hit);
   }
 
   return (
     <>
-      {/* Conteneur calé sur le ratio de l'image pour que le SVG s'aligne parfaitement */}
       <div
         className="relative mx-auto"
         style={{ aspectRatio: `${750 / 440}`, maxHeight: "100%", maxWidth: "100%" }}
+        onTouchStart={handleTouchStart}
+        onClick={handleClick}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -75,7 +101,9 @@ export default function InteractiveMap() {
           draggable={false}
         />
 
-        {/* SVG overlay — viewBox 0 0 100 100 = même espace que les points des zones */}
+        {/* SVG : rôle visuel uniquement — pas d'event handlers, mais pointer-events
+            actifs pour que le hover CSS fonctionne sur PC. Les événements bubblent
+            naturellement jusqu'au onPointerDown de la div parente. */}
         <svg
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
@@ -85,29 +113,24 @@ export default function InteractiveMap() {
             <polygon
               key={zone.id}
               points={zone.points}
-              fill="transparent"
-              className="hover:fill-amber-400/25 cursor-pointer transition-colors duration-150"
-              onClick={() => setActiveZone(zone)}
+              fill="rgba(0,0,0,0.001)"
+              className="hover:fill-amber-400/25 transition-colors duration-150"
             />
           ))}
         </svg>
       </div>
 
-      {/* Modale */}
       {activeZone && (
         <MapModal onClose={() => setActiveZone(null)}>
           <h2 className="text-2xl font-bold text-amber-900 text-center">
             {activeZone.label}
           </h2>
-
           <ZoneZoom points={activeZone.points} />
-
           <p className="text-stone-700 text-lg text-center leading-relaxed">
             {activeZone.description}
           </p>
-
           <button
-            onClick={handlePlay}
+            onClick={() => router.push(`/story/${activeZone.id}`)}
             className="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white text-xl font-bold py-4 rounded-2xl shadow transition-transform"
           >
             Jouer !
